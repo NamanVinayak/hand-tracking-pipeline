@@ -1,0 +1,53 @@
+# HaMeR RunPod Serverless - Using RunPod's Official Base
+# This base image is pre-tested for RunPod's user namespace configuration
+
+FROM runpod/pytorch:2.2.0-py3.10-cuda12.1.1-devel-ubuntu22.04
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1
+
+# Install additional OS dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    espeak-ng libsndfile1-dev \
+    ffmpeg \
+    libsm6 libxext6 \
+    libglfw3-dev libgles2-mesa-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install gdown for model downloads
+RUN pip install gdown
+
+# Install chumpy and other dependencies
+RUN pip install --no-build-isolation chumpy && \
+    pip install scipy opencv-python scikit-image
+
+# Clone HaMeR repository
+WORKDIR /app
+RUN git clone --recursive https://github.com/geopavlakos/hamer.git
+
+# Install ViTPose
+WORKDIR /app/hamer
+RUN pip install --no-build-isolation -v -e third-party/ViTPose
+
+# Install HaMeR with all dependencies
+RUN pip install --no-build-isolation -e .[all]
+
+# Download HaMeR checkpoints (6GB - baked into image)
+RUN bash fetch_demo_data.sh
+
+# Install RunPod and boto3 for serverless + S3
+RUN pip install runpod boto3
+
+# Copy our custom handler
+COPY handler.py /app/handler.py
+
+# Ensure all files are root-owned
+RUN chown -R root:root /app
+
+# Set working directory
+WORKDIR /app
+
+# RunPod serverless entry point
+CMD ["python", "-u", "handler.py"]

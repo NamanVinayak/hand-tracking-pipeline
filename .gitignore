@@ -1,0 +1,295 @@
+# ==============================================================================
+# Python
+# ==============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+hamer_venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# ==============================================================================
+# Sensitive Data & Credentials
+# ==============================================================================
+
+# Environment files
+.env
+*.env
+.env.*
+hamer_runpod/.env
+
+# Secrets and credentials
+**/secrets.*
+**/*secret*
+**/*credential*
+*_key.json
+*_keys.json
+*.pem
+*.key
+*.crt
+*.p12
+
+# AWS
+.aws/
+
+# ==============================================================================
+# Machine Learning Models & Data
+# ==============================================================================
+
+# HaMeR model files (6GB+, too large for git)
+hamer/_DATA/
+hamer/logs/
+hamer/checkpoints/
+hamer/demo_out/
+
+# Model checkpoints and weights
+*.pkl
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.h5
+*.hdf5
+*.pb
+
+# MediaPipe models
+*.task
+hand_landmarker.task
+
+# Training artifacts
+wandb/
+mlruns/
+runs/
+tensorboard/
+
+# ==============================================================================
+# Video & Media Files
+# ==============================================================================
+
+# Video files (source data)
+videos/
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.flv
+*.wmv
+*.m4v
+
+# Image files (if large datasets)
+# *.jpg
+# *.jpeg
+# *.png
+# *.gif
+# *.bmp
+# *.tiff
+
+# ==============================================================================
+# Output & Generated Files
+# ==============================================================================
+
+# Processing outputs
+output/
+demo_out/
+results/
+outputs/
+
+# JSON outputs (tracking data)
+*.json
+!package.json
+!tsconfig.json
+!.vscode/*.json
+
+# Rerun recordings
+*.rrd
+
+# Tar archives
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+# ==============================================================================
+# Operating System Files
+# ==============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==============================================================================
+# IDE & Editors
+# ==============================================================================
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Cursor
+.cursor/
+
+# ==============================================================================
+# Logs & Temporary Files
+# ==============================================================================
+
+# Logs
+*.log
+logs.txt
+*.out
+*.err
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# ==============================================================================
+# Docker
+# ==============================================================================
+
+# Docker build artifacts (keep Dockerfiles)
+*.tar.gz.lock
+
+# ==============================================================================
+# Git & Version Control
+# ==============================================================================
+
+# Git backup files
+*.orig
+
+# Claude Code plans (optional - remove if you want to track them)
+.claude/plans/
+
+# ==============================================================================
+# Project-Specific Exclusions
+# ==============================================================================
+
+# HaMeR repository (cloned during Docker build, not needed in repo)
+# Remove this line if you want to track hamer/ as a submodule
+hamer/
+
+# RunPod temporary files
+hamer_runpod/*.tar.gz
+hamer_runpod/temp/

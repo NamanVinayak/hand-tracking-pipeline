@@ -1,0 +1,13 @@
+# HaMeR Handler Layer - Just copies handler onto base
+# This is the FAST build when you update handler.py
+# Tag as: naman188/hamer-runpod:latest
+
+FROM naman188/hamer-runpod:base
+
+# CRITICAL: Set WORKDIR to /app/hamer so HaMeR can find models in relative path _DATA/
+WORKDIR /app/hamer
+
+# Copy handler (this is the only thing that changes)
+COPY handler.py /app/hamer/handler.py
+
+CMD ["python", "-u", "handler.py"]

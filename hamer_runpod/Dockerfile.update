@@ -1,0 +1,12 @@
+# HaMeR RunPod - Fix for user namespace error
+# Uses existing v2-r2 image, just adds permission fix
+
+FROM naman188/hamer-runpod:v2-r2
+
+# Fix file permissions for RunPod (avoid user namespace mapping errors)
+RUN chown -R root:root /app /opt/venv
+
+# Copy updated handler
+COPY handler.py /app/handler.py
+
+CMD ["python", "-u", "handler.py"]

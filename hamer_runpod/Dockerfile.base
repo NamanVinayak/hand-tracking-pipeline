@@ -1,0 +1,62 @@
+# HaMeR Base Image - Fixed for RunPod User Namespace
+# Uses --no-same-owner to prevent UID 1000222 from polluting layers
+
+FROM runpod/pytorch:2.2.0-py3.10-cuda12.1.1-devel-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1
+
+# CRITICAL: Prevent numpy from being upgraded by any pip command
+ENV PIP_CONSTRAINT=/tmp/numpy-constraint.txt
+RUN echo "numpy==1.26.4" > /tmp/numpy-constraint.txt
+
+# Install OS dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    espeak-ng libsndfile1-dev \
+    ffmpeg \
+    libsm6 libxext6 \
+    libglfw3-dev libgles2-mesa-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install numpy 1.26.4 FIRST (before any package can pull in numpy 2.x)
+RUN pip install --no-cache-dir "numpy==1.26.4"
+
+# Install Python dependencies
+RUN pip install gdown
+RUN pip install --no-build-isolation chumpy && \
+    pip install scipy opencv-python scikit-image
+
+# Clone HaMeR
+WORKDIR /app
+RUN git clone --recursive https://github.com/geopavlakos/hamer.git
+
+# Install ViTPose
+WORKDIR /app/hamer
+RUN pip install --no-build-isolation -v -e third-party/ViTPose
+
+# Install HaMeR
+RUN pip install --no-build-isolation -e .[all]
+
+# Download and extract models WITH --no-same-owner
+# This is the FIX: the original fetch_demo_data.sh doesn't have --no-same-owner
+# which causes UID 1000222 from the UT Austin researcher to pollute the layer
+RUN gdown https://drive.google.com/uc?id=1mv7CUAnm73oKsEEG1xE3xH2C_oqcFSzT -O hamer_demo_data.tar.gz && \
+    tar --warning=no-unknown-keyword --exclude=".*" --no-same-owner -xvf hamer_demo_data.tar.gz && \
+    rm hamer_demo_data.tar.gz
+
+# Copy MANO models (NOT included in HaMeR tarball due to licensing)
+# Downloaded from: https://huggingface.co/camenduru/HandRefiner
+COPY mano_models/MANO_RIGHT.pkl /app/hamer/_DATA/data/mano/MANO_RIGHT.pkl
+COPY mano_models/MANO_LEFT.pkl /app/hamer/_DATA/data/mano/MANO_LEFT.pkl
+
+# Rebuild xtcocotools against numpy 1.x (constraint file ensures 1.26.4)
+RUN pip install --no-cache-dir --force-reinstall xtcocotools
+
+# Install RunPod SDK
+RUN pip install runpod boto3
+
+# VERIFICATION: Fail build if numpy 2.x sneaks in
+RUN python -c "import numpy; v=numpy.__version__; print(f'NumPy: {v}'); assert v.startswith('1.'), f'ERROR: NumPy {v} is 2.x'"
+
+WORKDIR /app
