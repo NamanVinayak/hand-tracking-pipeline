@@ -7,6 +7,8 @@
 
 🖐️ Two-backend hand tracking pipeline for robotics data collection. **MediaPipe** runs locally for fast iteration; **HaMeR** runs on RunPod serverless GPUs for production-grade 3D hand mesh recovery.
 
+> **Status: proof of concept.** Both backends run and produce hand-tracking output on sample egocentric video. It is not a production data pipeline: it has not been run at scale, and error handling and tests are minimal.
+
 ---
 
 ## Why this exists
